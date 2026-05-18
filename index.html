@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Path</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo" onclick="goTo('home')"><span class="dot"></span>Skill Path</div>
+    <div class="nav-links">
+      <button onclick="goTo('roadmaps')" id="nav-roadmaps">Roadmaps</button>
+      <button onclick="goTo('resources')" id="nav-resources">Resources</button>
+      <button onclick="goTo('bookmarks')" id="nav-bookmarks">Bookmarks</button>
+      <div id="navAuth"></div>
+    </div>
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <button class="burger" id="burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button onclick="goTo('home');closeMobile()">Home</button>
+  <button onclick="goTo('roadmaps');closeMobile()">Roadmaps</button>
+  <button onclick="goTo('resources');closeMobile()">Resources</button>
+  <button onclick="goTo('bookmarks');closeMobile()">Bookmarks</button>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="overlay" id="authOverlay">
+  <div class="modal">
+    <button class="close-btn" onclick="closeAuth()">✕</button>
+    <h2 id="authTitle"></h2>
+    <p id="authSub"></p>
+    <div id="nameGroup" class="field">
+      <label>Full Name</label>
+      <input type="text" id="inName" placeholder="Your name">
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="inEmail" placeholder="you@email.com">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="inPass" placeholder="••••••••">
+    </div>
+    <div class="auth-err" id="authErr"></div>
+    <button class="btn-primary" id="authSubmit" onclick="submitAuth()" style="width:100%"></button>
+    <div class="auth-switch" id="authSwitch"></div>
+  </div>
+</div>
+
+<!-- ROADMAP MODAL -->
+<div class="overlay" id="roadmapOverlay">
+  <div class="modal roadmap-modal">
+    <button class="close-btn" onclick="closeRoadmap()">✕</button>
+    <div id="mIcon" style="font-size:2.5rem;margin-bottom:.5rem"></div>
+    <h2 id="mTitle"></h2>
+    <p id="mDesc"></p>
+    <div id="mPhases"></div>
+    <div class="tools-box">
+      <div class="tools-label">🛠 Tools</div>
+      <div id="mTools" class="chips"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="grid-bg"></div>
+    </div>
+    <div class="hero-content">
+      <div class="badge">✦ 100% Free Learning Resources</div>
+      <h1>Your Path to a<br><span class="grad">Tech Career</span> Starts Here</h1>
+      <p>Skill Path gives university students structured career roadmaps and curated free resources — no paid courses, no paywalls, ever.</p>
+      <div class="actions">
+        <button class="btn-primary" onclick="goTo('roadmaps')">Explore Paths ↓</button>
+        <button class="btn-ghost" onclick="goTo('resources')">Browse Resources</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="num">5</div><div class="lbl">Career Paths</div></div>
+        <div class="stat"><div class="num">30+</div><div class="lbl">Free Resources</div></div>
+        <div class="stat"><div class="num">0</div><div class="lbl">Paywalls</div></div>
+        <div class="stat"><div class="num">∞</div><div class="lbl">Possibilities</div></div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="footer-inner">
+      <div class="logo" onclick="goTo('home')"><span class="dot"></span>Skill Path</div>
+      <p>Helping students navigate tech careers with free, structured resources.</p>
+      <div class="footer-links">
+        <a onclick="goTo('roadmaps')">Roadmaps</a>
+        <a onclick="goTo('resources')">Resources</a>
+        <a href="mailto:hello@skillpath.dev">Contact</a>
+      </div>
+      <div class="footer-copy">© 2026 Skill Path. Built for students, by students.</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ROADMAPS -->
+<div id="page-roadmaps" class="page">
+  <section>
+    <div class="section-inner">
+      <div class="section-tag">career paths</div>
+      <h2>Choose Your Roadmap</h2>
+      <p class="section-desc">Pick a field and get a structured path from beginner to job-ready.</p>
+      <div class="roadmap-grid" id="roadmapGrid"></div>
+    </div>
+  </section>
+</div>
+
+<!-- RESOURCES -->
+<div id="page-resources" class="page">
+  <section>
+    <div class="section-inner">
+      <div class="section-tag">free resources</div>
+      <h2>Free Learning Resources</h2>
+      <p class="section-desc">Every resource here is completely free. Search, filter, and bookmark.</p>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search resources…" oninput="filterResources()">
+        <div class="filter-wrap" id="fieldFilters">
+          <button class="filter-btn active" onclick="setField('all',this)">All</button>
+          <button class="filter-btn" onclick="setField('Web Dev',this)">Web Dev</button>
+          <button class="filter-btn" onclick="setField('AI',this)">AI</button>
+          <button class="filter-btn" onclick="setField('Data Science',this)">Data Science</button>
+          <button class="filter-btn" onclick="setField('Cybersecurity',this)">Cyber</button>
+          <button class="filter-btn" onclick="setField('Mobile',this)">Mobile</button>
+        </div>
+        <select id="diffFilter" onchange="filterResources()">
+          <option value="all">All Levels</option>
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+      </div>
+      <div id="resourcesGrid" class="resources-grid"></div>
+      <div id="noResults" style="display:none;text-align:center;padding:3rem;color:var(--text2)">🔍 No resources found.</div>
+    </div>
+  </section>
+</div>
+
+<!-- BOOKMARKS -->
+<div id="page-bookmarks" class="page">
+  <section>
+    <div class="section-inner">
+      <div class="section-tag">saved</div>
+      <h2>Your Bookmarks</h2>
+      <p class="section-desc">Resources you've saved appear here.</p>
+      <div class="bm-box">
+        <div class="bm-header">
+          <span>Saved <span id="bmCount">0</span></span>
+          <button onclick="clearBookmarks()">Clear all</button>
+        </div>
+        <div id="bmGrid" class="resources-grid"></div>
+        <div id="bmEmpty" class="bm-empty">No bookmarks yet — <a onclick="goTo('resources')">browse resources</a> and click 🔖.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
